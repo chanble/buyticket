@@ -11,11 +11,11 @@
  *
  */
 (function (window, $) {
-    var ticketid = 'ticket_550000K37671';
+    var ticketid = 'ticket_550000K15200';
     var queryTicketid = 'query_ticket';
     var queryTicketTimes = 2; //脚本执行次数
     var curQueryTicketTimes = 0; //当前执行的次数
-    var preBuyTicketTimes = 20; //点击预订总次数
+    var preBuyTicketTimes = 10; //点击预订总次数
     var queryTicket = function () {
         if (curQueryTicketTimes < queryTicketTimes) {
             //console.log('queryTicket');
@@ -41,7 +41,7 @@
             };
             clickPrebuy() ();
         }
-        curQueryTicketTimes++;
+        //curQueryTicketTimes++;
     };
     queryTicket();
 }) (window, jQuery);
