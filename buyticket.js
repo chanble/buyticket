@@ -1,36 +1,50 @@
-
 /*
- * 这是一个抢票js，
- * 本js只适用有编程基础的人使用。
- * 用法说明：
- * 1,登录上www.12306.cn,到查询车票页(ihttps://kyfw.12306.cn/otn/leftTicket/init),
- * 2,选择自己好自己要买的日期和出发地和目的地,
- * 3,找到自己要购买的车票的那个td的id，类似ticket_5000K28243
+ * 这是一个 JavaScript 代码片段速记器。
  *
+ * 输入一些 JavaScript，然后可点击右键或从 执行 菜单中选择：
+ * 1. 运行 对选中的文本求值(eval) (Ctrl+R)，
+ * 2. 查看 对返回值使用对象查看器 (Ctrl+I)，
+ * 3. 显示 在选中内容后面以注释的形式插入返回的结果。 (Ctrl+L)
  */
+
 (function(window, $){
-	var ticketid = 'ticket_550000K15200';
+	var ticketid = 'ticket_550000K37671';
 	var queryTicketid = 'query_ticket';
 	//乘车人在联系人第几个
-	var riderOrder = 2;
-	var queryInterval = 1000;
-	var preBuyTimeout = 1000;
+	var riderOrder = 1;
+	var queryInterval = 3000;
+	var preBuyTimeout = 500;
+	var queryTicketTimes = 20;//脚本执行次数
+	var curQueryTicketTimes = 0;//当前执行的次数
+	var preBuyTicketTimes = 20;//点击预订总次数
 	var queryTicket = function(){
-		$("#" + queryTicketid).click();
-		var preBuyTicket = $("#"+ticketid+' td.no-br a');
-		if(preBuyTicket.length > 0){
-			setTimeout(function(){
-				preBuyTicket.click();
-			}, queryInterval);
+		if(curQueryTicketTimes < queryTicketTimes){
+			//console.log('queryTicket');
+			$("#" + queryTicketid).click();
+			var clickPrebuy = function(){
+				//console.log('clickPrebuy');
+
+				var calltimes = 0;
+				var clickPrebuy1 = function(){
+					//console.log('clickPrebuy1');
+					if(calltimes < preBuyTicketTimes){
+						var preBuyTicket = $("#"+ticketid+' td.no-br a');
+						if(preBuyTicket.length > 0){
+							preBuyTicket.click();
+						}else{
+							setTimeout(clickPrebuy1, 100);
+						}
+					}else{
+						queryTicket();
+					}
+					calltimes++;
+				}
+				return clickPrebuy1;
+			};
+			clickPrebuy()();
 		}
-		var rider = $('#normalPassenger_' + riderOrder);
-		if(rider.length > 0){
-			rider.click();
-			$('#randCode').focus();
-			//弹出浏览器
-		}else{
-			setTimeout(queryTicket, preBuyTimeout);
-		}
+		curQueryTicketTimes++;
 	};
 	queryTicket();
 })(window, jQuery);
+
